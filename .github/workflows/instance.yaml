@@ -25,5 +25,5 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: .
-        push: false
-        tags: username/repository:${{ github.sha }}
+        push: true
+        tags: username/repository:new-image-flask
