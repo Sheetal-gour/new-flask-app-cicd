@@ -1,7 +1,11 @@
 on: push
 
 name: Check
-
+env:
+  ECR_REGISTRY: my-ecr-registry
+  ECR_REPOSITORY: my-ecr-repository
+  AWS_REGION: us-east-1
+  
 jobs:
   check:
     name: first-job
@@ -21,9 +25,17 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+          
     - name: Build and Push Docker Image
       uses: docker/build-push-action@v2
       with:
         context: .
         push: true
-        tags: username/repository:new-image-flask
+        tags: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+
+    - name: Write image digest to file
+      run: echo ${{ steps.build-image.outputs.digest }} > image_digest.txt
+
