@@ -1,7 +1,8 @@
 on: push
 
 name: Check
-  
+env:
+  AWS_REGION: "us-east-1"
 jobs:
   check:
     name: first-job
