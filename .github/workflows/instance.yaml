@@ -37,7 +37,6 @@ jobs:
         IMAGE_TAG: 1.2
       run: |
         docker build --tag docker-flask-image:$IMAGE_TAG .
-        docker images
         docker tag sheetal0408/docker-flask-image:$IMAGE_TAG docker-flask-image:$IMAGE_TAG 
         docker push ${{ secrets.DOCKERHUB_USERNAME }}/docker-flask-image:$IMAGE_TAG
 
