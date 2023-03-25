@@ -1,10 +1,6 @@
 on: push
 
 name: Check
-env:
-  ECR_REGISTRY: https://${{}}.dkr.ecr.us-west-2.amazonaws.com
-  ECR_REPOSITORY: my-ecr-repository
-  AWS_REGION: us-east-1
   
 jobs:
   check:
