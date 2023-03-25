@@ -39,3 +39,7 @@ jobs:
         docker build --tag docker-flask-image:$IMAGE_TAG .
         docker images
         docker push ${{ secrets.DOCKERHUB_USERNAME }}/docker-flask-image:$IMAGE_TAG
+
+    - name: Delete docker repository
+      run: |
+        aws ecr delete-repository --repository-name hello-world1 --force
