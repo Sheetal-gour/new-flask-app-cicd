@@ -37,7 +37,7 @@ jobs:
         IMAGE_TAG: 1.2
       run: |
         docker build --tag docker-flask-image:$IMAGE_TAG .
-        docker tag sheetal0408/docker-flask-image:$IMAGE_TAG docker-flask-image:$IMAGE_TAG 
+        docker tag docker-flask-image:$IMAGE_TAG sheetal0408/docker-flask-image:$IMAGE_TAG 
         docker push ${{ secrets.DOCKERHUB_USERNAME }}/docker-flask-image:$IMAGE_TAG
 
     - name: Delete ecr repository
