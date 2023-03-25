@@ -29,7 +29,15 @@ jobs:
         aws-region: ${{ env.AWS_REGION }}
           
 
-    - name: test-aws-configuration
+    - name: create-ecr-repo
       run: |
         aws ecr create-repository --repository-name hello-world --image-scanning-configuration scanOnPush=true --region us-east-1
 
+    - name: Build, tag, and push image to Amazon ECR
+      env:
+        ECR_REGISTRY: ${{ steps.create-ecr-repo.outputs.registry }}
+        ECR_REPOSITORY: ${{ steps.create-ecr-repo.outputs.repositoryName}}
+        IMAGE_TAG: 1.2
+      run: |
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
