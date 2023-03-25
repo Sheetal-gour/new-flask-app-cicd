@@ -13,18 +13,13 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
+
     - name: Login to Docker Hub
       uses: docker/login-action@v2
       with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           
-    - name: Log in to the Container registry
-      uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
-      with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
           
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
@@ -32,18 +27,9 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION }}
-        
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
           
-    - name: Build and Push Docker Image
-      uses: docker/build-push-action@v2
-      with:
-        context: .
-        push: true
-        tags: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
 
-    - name: Write image digest to file
-      run: echo ${{ steps.build-image.outputs.digest }} > image_digest2.txt
+    - name: test-aws-configuration
+      run: |
+        aws ecr create-repository --repository-name hello-repository --image-scanning-configuration scanOnPush=true --region us-east-1
 
