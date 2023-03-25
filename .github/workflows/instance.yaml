@@ -42,7 +42,7 @@ jobs:
         docker build --tag docker-flask-image:$IMAGE_TAG .
         docker tag docker-flask-image:$IMAGE_TAG ${{ secrets.DOCKERHUB_USERNAME }}/docker-flask-image:$IMAGE_TAG 
         docker push ${{ secrets.DOCKERHUB_USERNAME }}/docker-flask-image:$IMAGE_TAG
-        
+
     - name: Delete ecr repository
       run: |
         aws ecr delete-repository --repository-name hello-world --force
@@ -63,5 +63,8 @@ jobs:
         SSH_HOST: ${{ env.REMOTE_HOST }}
         SSH_USER: ${{ env.REMOTE_USER }}
         SSH_KEY: ${{ secrets.SSH_KEY_PAIR }} 
-  
+
+    - name: ssh-test
+      run: ssh ec2 'ls -al'
+
     
